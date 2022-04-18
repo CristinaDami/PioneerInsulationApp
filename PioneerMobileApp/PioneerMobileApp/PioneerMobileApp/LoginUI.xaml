@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PioneerMobileApp.LoginUI"
+             BackgroundColor="White">
+    <ContentPage.Content>
+        <StackLayout Padding="40" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+
+            <Image Source="pioneer_logo.jpg" WidthRequest="160" HeightRequest="52"></Image>
+            
+            <Entry x:Name="txtUsername" Placeholder="Username" TextColor="ForestGreen" PlaceholderColor="Gray"></Entry>
+            <Entry x:Name="txtPassword" Placeholder="Password" IsPassword="True" TextColor="ForestGreen" PlaceholderColor="Gray"></Entry>
+
+            <Button 
+                VerticalOptions="Center"
+                Text="Login"
+                TextColor="ForestGreen"
+                BackgroundColor="Transparent"
+                BorderColor="ForestGreen"
+                BorderWidth="1.5"
+                CornerRadius="50"
+                FontAttributes="Bold"
+                Clicked="Button_Clicked"
+                ></Button>
+
+            <Label HorizontalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Dont' have an account?" TextColor="Gray" />
+                        <Span Text="Ask an Admin for support&#10;" TextColor="Gray" FontAttributes="Bold" TextDecorations="Underline"  />
+                        <Span Text="Reset Password" TextColor="Gray" FontAttributes="Bold" TextDecorations="Underline" />
+                    </FormattedString>
+                </Label.FormattedText>
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
