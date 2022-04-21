@@ -3,10 +3,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PioneerMobileApp.HomePage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Pioneer Homepage!"
+        <StackLayout Margin="20,35,20,20">
+
+            <Label
+                x:Name="lblUserType"
+                FontSize="Large"
+                FontAttributes="Bold"
+                VerticalOptions="StartAndExpand" 
+                HorizontalOptions="StartAndExpand" />
+            
+            <Label
+                x:Name="lblWelcome"
+                Text="Welcome to Pioneer Homepage!"
+                FontSize="Large"
+                FontAttributes="Bold"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+
+            <Button Text="Jobs" 
+                    Clicked="Button_JobsClicked"
+                    BackgroundColor="ForestGreen"
+                    TextColor="AntiqueWhite"
+                    FontSize="Large"
+                    FontAttributes="Bold"
+                    CornerRadius="50"
+                    ></Button>
+            <Button Text="Timesheet"
+                    Clicked="Button_TimesheetClicked"
+                    BackgroundColor="ForestGreen"
+                    TextColor="AntiqueWhite"
+                    FontSize="Large"
+                    FontAttributes="Bold"    
+                    CornerRadius="50"
+                    ></Button>
+            <Button Text="Profile" 
+                    Clicked="Button_ProfileClicked"
+                    BackgroundColor="ForestGreen"
+                    TextColor="AntiqueWhite"
+                    FontSize="Large"
+                    FontAttributes="Bold"  
+                    CornerRadius="50"
+                    ></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

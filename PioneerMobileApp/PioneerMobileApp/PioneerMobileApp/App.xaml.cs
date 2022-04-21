@@ -1,8 +1,5 @@
 ﻿using PioneerMobileApp.Services;
-using PioneerMobileApp.Views;
-using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace PioneerMobileApp
 {
