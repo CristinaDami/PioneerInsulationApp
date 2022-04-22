@@ -1,8 +1,11 @@
-﻿using PioneerMobileApp.Models;
+﻿using Newtonsoft.Json;
+using PioneerMobileApp.Common;
+using PioneerMobileApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -35,8 +38,13 @@ namespace PioneerMobileApp
 
             var pioneerUser =  _pioneerUsers.SingleOrDefault(x => x.UserName.Equals(txtUsername.Text) && x.Password.Equals(txtPassword.Text));
 
+            pioneerUser.SetEvents((DateTime.Now, new List<EventModel>() { new EventModel { Name = "Event1", Description = "Description1" } }));
+            pioneerUser.SetEvents((DateTime.Now.AddDays(1), new List<EventModel>() { new EventModel { Name = "Event2", Description = "Description2" } }));
+            pioneerUser.SetEvents((DateTime.Now.AddDays(2), new List<EventModel>() { new EventModel { Name = "Event3", Description = "Description3" } }));
+
             if (pioneerUser != null)
             {
+                Task.Run(() => SecureStorage.SetAsync(ApplicationConstants.CurrentUser, JsonConvert.SerializeObject(pioneerUser)));
                 UserCallToAction(pioneerUser);
             }
             else

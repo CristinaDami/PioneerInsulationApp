@@ -1,12 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PioneerMobileApp.Navigation.Timesheet">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             
+             xmlns:plugin="clr-namespace:Xamarin.Plugin.Calendar.Controls;assembly=Xamarin.Plugin.Calendar" 
+             xmlns:local="clr-namespace:PioneerMobileApp.ViewModels"
+             x:Class="PioneerMobileApp.Navigation.Timesheet"     
+             x:Name="PioneerCalendarPage"
+             >
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.BindingContext>
+        <local:CalendarViewModel />
+    </ContentPage.BindingContext>
+
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Welcome to Xamarin.Forms!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+
+            <plugin:Calendar
+                Events="{Binding Events}"
+                MaximumDate="{Binding MaximumDate}"
+                MinimumDate="{Binding MinimumDate}"
+                Month="{Binding Month}"
+                SelectedDate="{Binding SelectedDate}"
+                Year="{Binding Year}"
+                Padding="10,0"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand">
+                <plugin:Calendar.EventTemplate>
+                    <DataTemplate>
+                        <StackLayout
+                    Padding="15,0,0,0"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand">
+                            <Label
+                        FontAttributes="Bold"
+                        FontSize="Medium"
+                        Text="{Binding Name}" />
+                            <Label
+                        FontSize="Small"
+                        LineBreakMode="WordWrap"
+                        Text="{Binding Description}" />
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference PioneerCalendarPage}}" CommandParameter="{Binding .}" />
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </DataTemplate>
+                </plugin:Calendar.EventTemplate>
+            </plugin:Calendar>
+
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
