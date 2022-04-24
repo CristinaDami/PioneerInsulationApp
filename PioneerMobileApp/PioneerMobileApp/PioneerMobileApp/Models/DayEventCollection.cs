@@ -4,8 +4,10 @@ using Xamarin.Plugin.Calendar.Interfaces;
 
 namespace PioneerMobileApp.Models
 {
-    /// <summary>
-    /// Wrapper to allow change the dot color
+    /// <summary>    
+    /// Author: Cristina Damian - Roehampton University - Faculty of Computing
+    /// 
+    /// Wrapper to allow change the dot color on Calendar Event
     /// </summary>
     public class DayEventCollection<T> : List<T>, IPersonalizableDayEvent
     {

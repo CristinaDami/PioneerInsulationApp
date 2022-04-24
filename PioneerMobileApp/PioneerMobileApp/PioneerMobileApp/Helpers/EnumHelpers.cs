@@ -4,6 +4,11 @@ using System.Reflection;
 
 namespace PioneerMobileApp.Helpers
 {
+    /// <summary>
+    /// Author: Cristina Damian - Roehampton University - Faculty of Computing
+    /// 
+    /// Helper class for getting value from Description Enum attribute
+    /// </summary>
     public static class EnumHelpers
     {
         public static string GetEnumDescription(this Enum value)

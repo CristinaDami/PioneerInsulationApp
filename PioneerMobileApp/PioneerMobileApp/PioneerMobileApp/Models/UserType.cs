@@ -2,6 +2,11 @@
 
 namespace PioneerMobileApp.Models
 {
+    /// <summary>
+    /// Author: Cristina Damian - Roehampton University - Faculty of Computing
+    /// 
+    /// Enum User Type
+    /// </summary>
     public enum UserType
     {        
         [Description("Admin user")]

@@ -16,9 +16,7 @@
 
     <ContentPage.Content>
         <StackLayout Padding="40" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-            <!--<Label Text="Calendar Pioneer"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />-->
+
             <Image Source="pioneer_logo.jpg" WidthRequest="160" HeightRequest="52"></Image>
 
             <Label
@@ -41,7 +39,6 @@
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand">
                 
-
                 <plugin:Calendar.HeaderSectionTemplate>
                     <controls:CalendarHeader />
                 </plugin:Calendar.HeaderSectionTemplate>
@@ -51,12 +48,6 @@
                         <controls:CalendarFooter />
                     </DataTemplate>
                 </plugin:Calendar.FooterSectionTemplate>
-
-                <!--<plugin:Calendar.EventTemplate>
-                    <DataTemplate>
-                        <controls:CalenderEvent CalenderEventCommand="{Binding BindingContext.EventSelectedCommand, Source={x:Reference advancedCalendarPage}}" />
-                    </DataTemplate>
-                </plugin:Calendar.EventTemplate>-->
 
                 <plugin:Calendar.EventTemplate>
                     <DataTemplate>
@@ -91,7 +82,6 @@
                 </plugin:Calendar.EmptyTemplate>
 
             </plugin:Calendar>
-
 
         </StackLayout>
     </ContentPage.Content>

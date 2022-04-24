@@ -5,6 +5,11 @@ using Xamarin.Forms.Xaml;
 
 namespace PioneerMobileApp.Controls
 {
+    /// <summary>
+    /// Author: Cristina Damian - Roehampton University - Faculty of Computing
+    /// 
+    /// Class for attaching interactions events on Calendar (e.g. expand/collapse Footer)
+    /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CalenderEvent : ContentView
     {

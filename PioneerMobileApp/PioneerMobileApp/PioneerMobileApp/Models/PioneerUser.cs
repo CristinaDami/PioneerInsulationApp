@@ -4,7 +4,12 @@ using System.Collections.Generic;
 
 namespace PioneerMobileApp.Models
 {
-    [Table("[dbo].PioneerUser")]
+    /// <summary>
+    /// Author: Cristina Damian - Roehampton University - Faculty of Computing
+    /// 
+    /// Class entity to SQL Server PioneerUser Table
+    /// </summary>
+    [Table("[dbo].PioneerUser")] // Define a name of a physical SQL Server Table
     public class PioneerUser
     {
         [ExplicitKey] public int Id { get; set; }
@@ -20,6 +25,9 @@ namespace PioneerMobileApp.Models
 
         public Dictionary<DateTime, List<EventModel>> Events { get; set; }
 
+        /// <summary>
+        /// Class constructor for PioneerUser
+        /// </summary>
         public PioneerUser()
         {
             Events = new Dictionary<DateTime, List<EventModel>>();

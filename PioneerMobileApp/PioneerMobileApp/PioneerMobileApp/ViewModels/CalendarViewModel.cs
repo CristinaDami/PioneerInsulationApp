@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
 using Xamarin.Plugin.Calendar.Models;
 using Xamarin.Plugin.Calendar.Enums;
 
@@ -17,83 +16,90 @@ namespace PioneerMobileApp.ViewModels
 {
     public class CalendarViewModel : BaseViewModel
     {
-        public ICommand TodayCommand => new Command(() =>
-        {
-            Year = DateTime.Today.Year;
-            Month = DateTime.Today.Month;
-        });
-
-        
-        public ICommand DayTappedCommand => new Command<DateTime>(async (date) => await DayTapped(date));
-        public ICommand SwipeLeftCommand => new Command(() => ChangeShownUnit(1));
-        public ICommand SwipeRightCommand => new Command(() => ChangeShownUnit(-1));
-        public ICommand SwipeUpCommand => new Command(() => { ShownDate = DateTime.Today; });
-
-        public ICommand EventSelectedCommand => new Command(async (item) => await ExecuteEventSelectedCommand(item));
-
         public CalendarViewModel() : base()
         {
-            //Device.BeginInvokeOnMainThread(async () => await App.Current.MainPage.DisplayAlert("Info", "Loading events with delay, and changeing current view.", "Ok"));
-
+            // Retrieving PioneerUser authenticated and stored securely in a memory storage (SecureStorage)
             var user = Task.Run(() => SecureStorage.GetAsync(ApplicationConstants.CurrentUser)).Result;
+
+            // Object is stored as a serialized JSON string: it requires to be deserialized as PioneerUser object
             var pioneerUser = JsonConvert.DeserializeObject<PioneerUser>(user);
 
-            //
-
+            // Pioneer database repository access layer
             var pioneerRepository = new PioneerRepository();
+
+            // Empty collection of PioneerEvent
             var events = Enumerable.Empty<PioneerEvent>();
 
-            if (pioneerUser.UserType == UserType.Admin)
+            // 
+            if (pioneerUser.UserType == UserType.Admin || pioneerUser.UserType == UserType.AdminOffice)
             {
-                events = pioneerRepository.GetAllEvents();
+                events = pioneerRepository.GetAllEvents(); // Retieve all events only if Admin
             }
             else
             {
-                events = pioneerRepository.GetEventsByUserId(pioneerUser.Id);
+                events = pioneerRepository.GetEventsByUserId(pioneerUser.Id); // Operative retrieves its own events
             }
-            
+
+            // Events are grouped by Event Date and ordered in ascending order
             var eventsGrouped = events
                 .GroupBy(x => x.EventDate)
-                .Select(x => new { x.Key, Events = x.Select(y => new EventModel() { 
-                    Name = string.Concat(y.FirstName, " ", y.LastName, " - ", y.EventTitle), Description = y.EventDescription
-                }) }).OrderBy(x => x.Key).ThenBy(x => x.Events.OrderBy(y => y.Name));
+                .Select(x => new
+                {
+                    x.Key,
+                    Events = x.Select(y => new EventModel()
+                    {
+                        Name = string.Concat(y.FirstName, " ", y.LastName, " - ", y.EventTitle),
+                        Description = y.EventDescription
+                    })
+                }).OrderBy(x => x.Key).ThenBy(x => x.Events.OrderBy(y => y.Name));
 
+            // Empty collection of Colour
             var colorUsed = new List<Color>();
 
+            // Parsing PioneerEvents into a collection event that Calendar can handle
             Events = new EventCollection();
+
+            // Iterates a Events grouped by Date
             foreach (var @event in eventsGrouped)
             {
                 Color color = Color.Default;
                 var foundColor = true;
-                while (foundColor)
+                while (foundColor) // Assigns a Colour for each Key/Value Date/Events pair
                 {
                     Random rnd = new Random();
-                    color = Color.FromRgb(255, rnd.Next(256), rnd.Next(256));
-                    if (!colorUsed.Any(x => x.Equals(color)))
+                    color = Color.FromRgb(255, rnd.Next(256), rnd.Next(256));// Generates a random Colour
+                    if (!colorUsed.Any(x => x.Equals(color))) // Check to assign an unique color 
                     {
                         foundColor = false;
                         colorUsed.Add(color);
                     }
                 }
 
-                var dayEvent = new DayEventCollection<EventModel>(@event.Events)
+                var dayEvent = new DayEventCollection<EventModel>(@event.Events) // Creates a Day event collection of Type Event model
                 {
                     EventIndicatorColor = color,
                     EventIndicatorSelectedColor = color
                 };
 
-                Events.Add(@event.Key, dayEvent);
+                Events.Add(@event.Key, dayEvent); // Add pair Event date / collection of Events to the collection of events
             }
-    }
-
-        private IEnumerable<EventModel> GenerateEvents(int count, string name)
-        {
-            return Enumerable.Range(1, count).Select(x => new EventModel
-            {
-                Name = $"{name} event{x}",
-                Description = $"This is {name} event{x}'s description!"
-            });
         }
+
+        // Collection of properties and fields
+        #region Attributes, Field and Events
+
+        public ICommand TodayCommand => new Command(() =>
+        {
+            Year = DateTime.Today.Year;
+            Month = DateTime.Today.Month;
+        });
+
+        public ICommand DayTappedCommand => new Command<DateTime>(async (date) => await DayTapped(date));
+        public ICommand SwipeLeftCommand => new Command(() => ChangeShownUnit(1));
+        public ICommand SwipeRightCommand => new Command(() => ChangeShownUnit(-1));
+        public ICommand SwipeUpCommand => new Command(() => { ShownDate = DateTime.Today; });
+
+        public ICommand EventSelectedCommand => new Command(async (item) => await ExecuteEventSelectedCommand(item));
 
         public EventCollection Events { get; }
 
@@ -192,6 +198,8 @@ namespace PioneerMobileApp.ViewModels
         {
             ShownDate.AddDays(weeksToAdd * 7);
         }
+
+        #endregion
 
     }
 }
