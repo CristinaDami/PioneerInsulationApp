@@ -11,6 +11,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Plugin.Calendar.Models;
+using Xamarin.Plugin.Calendar.Enums;
 
 namespace PioneerMobileApp.ViewModels
 {
@@ -22,6 +23,12 @@ namespace PioneerMobileApp.ViewModels
             Month = DateTime.Today.Month;
         });
 
+        
+        public ICommand DayTappedCommand => new Command<DateTime>(async (date) => await DayTapped(date));
+        public ICommand SwipeLeftCommand => new Command(() => ChangeShownUnit(1));
+        public ICommand SwipeRightCommand => new Command(() => ChangeShownUnit(-1));
+        public ICommand SwipeUpCommand => new Command(() => { ShownDate = DateTime.Today; });
+
         public ICommand EventSelectedCommand => new Command(async (item) => await ExecuteEventSelectedCommand(item));
 
         public CalendarViewModel() : base()
@@ -31,62 +38,53 @@ namespace PioneerMobileApp.ViewModels
             var user = Task.Run(() => SecureStorage.GetAsync(ApplicationConstants.CurrentUser)).Result;
             var pioneerUser = JsonConvert.DeserializeObject<PioneerUser>(user);
 
+            //
 
             var pioneerRepository = new PioneerRepository();
-            var events = Task.Run(() => pioneerRepository.GetEventsByUserId(pioneerUser.Id)).Result;
-            // testing all kinds of adding events
-            // when initializing collection
+            var events = Enumerable.Empty<PioneerEvent>();
 
+            if (pioneerUser.UserType == UserType.Admin)
+            {
+                events = pioneerRepository.GetAllEvents();
+            }
+            else
+            {
+                events = pioneerRepository.GetEventsByUserId(pioneerUser.Id);
+            }
+            
             var eventsGrouped = events
                 .GroupBy(x => x.EventDate)
-                .Select(x => new { x.Key, Events = x.Select(y => new EventModel() { Name = y.EventTitle, Description = y.EventDescription }) });
+                .Select(x => new { x.Key, Events = x.Select(y => new EventModel() { 
+                    Name = string.Concat(y.FirstName, " ", y.LastName, " - ", y.EventTitle), Description = y.EventDescription
+                }) }).OrderBy(x => x.Key).ThenBy(x => x.Events.OrderBy(y => y.Name));
+
+            var colorUsed = new List<Color>();
 
             Events = new EventCollection();
-            eventsGrouped.ForEach(x => Events.Add(x.Key, x.Events.ToList() ));
+            foreach (var @event in eventsGrouped)
+            {
+                Color color = Color.Default;
+                var foundColor = true;
+                while (foundColor)
+                {
+                    Random rnd = new Random();
+                    color = Color.FromRgb(255, rnd.Next(256), rnd.Next(256));
+                    if (!colorUsed.Any(x => x.Equals(color)))
+                    {
+                        foundColor = false;
+                        colorUsed.Add(color);
+                    }
+                }
 
-            //Events = new EventCollection
-            //{
-            //    [DateTime.Now.AddDays(-3)] = new List<EventModel>(GenerateEvents(10, "Cool")),
-            //    [DateTime.Now.AddDays(4)] = new List<EventModel>(GenerateEvents(2, "Simple2")),
-            //    [DateTime.Now.AddDays(2)] = new List<EventModel>(GenerateEvents(1, "Simple1")),
-            //    [DateTime.Now.AddDays(1)] = new List<EventModel>(GenerateEvents(3, "Simple3")),
-            //};
+                var dayEvent = new DayEventCollection<EventModel>(@event.Events)
+                {
+                    EventIndicatorColor = color,
+                    EventIndicatorSelectedColor = color
+                };
 
-            //// with add method
-            //Events.Add(DateTime.Now.AddDays(-1), new List<EventModel>(GenerateEvents(5, "Cool")));
-
-            //// with indexer
-            //Events[DateTime.Now] = new List<EventModel>(GenerateEvents(2, "Boring"));
-
-            //Task.Delay(5000).ContinueWith(_ =>
-            //{
-            //    // indexer - update later
-            //    Events[DateTime.Now] = new ObservableCollection<EventModel>(GenerateEvents(10, "Cool"));
-
-            //    // add later
-            //    Events.Add(DateTime.Now.AddDays(3), new List<EventModel>(GenerateEvents(5, "Cool")));
-
-            //    // indexer later
-            //    Events[DateTime.Now.AddDays(10)] = new List<EventModel>(GenerateEvents(10, "Boring"));
-
-            //    // add later
-            //    Events.Add(DateTime.Now.AddDays(15), new List<EventModel>(GenerateEvents(10, "Cool")));
-
-            //    Month += 1;
-
-            //    Task.Delay(3000).ContinueWith(t =>
-            //    {
-            //        // get observable collection later
-            //        var todayEvents = Events[DateTime.Now] as ObservableCollection<EventModel>;
-
-            //        // insert/add items to observable collection
-            //        todayEvents.Insert(0, new EventModel { Name = "Cool event insert", Description = "This is Cool event's description!" });
-            //        todayEvents.Add(new EventModel { Name = "Cool event add", Description = "This is Cool event's description!" });
-
-            //        Month += 1;
-            //    }, TaskScheduler.FromCurrentSynchronizationContext());
-            //}, TaskScheduler.FromCurrentSynchronizationContext());
-        }
+                Events.Add(@event.Key, dayEvent);
+            }
+    }
 
         private IEnumerable<EventModel> GenerateEvents(int count, string name)
         {
@@ -98,6 +96,22 @@ namespace PioneerMobileApp.ViewModels
         }
 
         public EventCollection Events { get; }
+
+        private DateTime _shownDate = DateTime.Today;
+
+        public DateTime ShownDate
+        {
+            get => _shownDate;
+            set => SetProperty(ref _shownDate, value);
+        }
+
+        private WeekLayout _calendarLayout = WeekLayout.Month;
+
+        public WeekLayout CalendarLayout
+        {
+            get => _calendarLayout;
+            set => SetProperty(ref _calendarLayout, value);
+        }
 
         private int _month = DateTime.Today.Month;
 
@@ -139,12 +153,44 @@ namespace PioneerMobileApp.ViewModels
             set => SetProperty(ref _maximumDate, value);
         }
 
+        private static async Task DayTapped(DateTime date)
+        {
+            var message = $"Received tap event from date: {date}";
+            await App.Current.MainPage.DisplayAlert("DayTapped", message, "Ok");
+        }
+
         private async Task ExecuteEventSelectedCommand(object item)
         {
             if (item is EventModel eventModel)
             {
                 await App.Current.MainPage.DisplayAlert(eventModel.Name, eventModel.Description, "Ok");
             }
+        }
+
+        private void ChangeShownUnit(int amountToAdd)
+        {
+            switch (CalendarLayout)
+            {
+                case WeekLayout.Week:
+                case WeekLayout.TwoWeek:
+                    ChangeShownWeek(amountToAdd);
+                    break;
+
+                case WeekLayout.Month:
+                default:
+                    ChangeShownMonth(amountToAdd);
+                    break;
+            }
+        }
+
+        private void ChangeShownMonth(int monthsToAdd)
+        {
+            ShownDate.AddMonths(monthsToAdd);
+        }
+
+        private void ChangeShownWeek(int weeksToAdd)
+        {
+            ShownDate.AddDays(weeksToAdd * 7);
         }
 
     }

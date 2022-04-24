@@ -40,13 +40,39 @@ WHERE pu.[Email] = @Email and pu.[Password] = @Password
 ";
 
             // Query execution
-            var userEvents = Task.Run(() =>  _dbConnection.QuerySingleAsync<PioneerUser>(query, parameters)).Result;
+            var userEvents = Task.Run(() =>  _dbConnection.QuerySingleOrDefaultAsync<PioneerUser>(query, parameters)).Result;
 
             // Return data
             return userEvents;
         }
 
-        public async Task<IEnumerable<UserEvent>> GetEventsByUserId(int userId)
+        public IEnumerable<PioneerEvent> GetAllEvents()
+        {
+            const string query = @"
+SELECT pe.[Id]
+      ,[UserId]
+      ,[EventDate]
+      ,[EventTitle]
+      ,[EventDescription]
+      ,pu.[FirstName]
+      ,pu.[LastName]
+      ,pu.[Password]
+      ,pu.[Email]
+      ,pu.[UserTypeId]
+FROM [dbo].[PioneerEvent] pe
+INNER JOIN [dbo].[PioneerUser] pu on pe.UserId = pu.Id
+WHERE [EventDate] >= GETDATE()
+";
+
+            // Query execution
+            var userEvents = Task.Run(() => _dbConnection.QueryAsync<PioneerEvent>(query)).Result;
+
+            // Return data
+            return userEvents;
+
+        }
+
+        public IEnumerable<PioneerEvent> GetEventsByUserId(int userId)
         {
 
             var paramDictionary = new Dictionary<string, object>
@@ -63,13 +89,18 @@ SELECT pe.[Id]
       ,[EventDate]
       ,[EventTitle]
       ,[EventDescription]
+      ,pu.[FirstName]
+      ,pu.[LastName]
+      ,pu.[Password]
+      ,pu.[Email]
+      ,pu.[UserTypeId]
 FROM [dbo].[PioneerEvent] pe
 INNER JOIN [dbo].[PioneerUser] pu on pe.UserId = pu.Id
 WHERE [EventDate] >= GETDATE() AND [UserId] = @UserId
 ";
 
             // Query execution
-            var userEvents = await _dbConnection.QueryAsync<UserEvent>(query, parameters);
+            var userEvents = Task.Run(() => _dbConnection.QueryAsync<PioneerEvent>(query, parameters)).Result;
 
             // Return data
             return userEvents;

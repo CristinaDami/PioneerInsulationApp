@@ -4,7 +4,6 @@ using PioneerMobileApp.Models;
 using PioneerMobileApp.Repository;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -16,35 +15,28 @@ namespace PioneerMobileApp
     public partial class LoginUI : ContentPage
     {
         private List<PioneerUser> _pioneerUsers;
+        private PioneerRepository _repository;
 
         public LoginUI()
         {
             InitializeComponent();
 
-            //_pioneerUsers = new List<PioneerUser>
-            //{
-            //    new PioneerUser("Cristina", "Damian", "A", "A", UserType.Admin, "Boss"),
-            //    new PioneerUser("Moses", "Damian", "Admina", "Admina", UserType.AdminOffice, "Administration"),
-            //    new PioneerUser("Bogdan", "Popescu", "Adminu", "Adminu", UserType.Operative, "Operative"),
-            //};
+            _repository = new PioneerRepository();
         }
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtUsername.Text) && string.IsNullOrEmpty(txtPassword.Text))
+            // Setting internal variable and trimming eventual spaces
+            var userName = txtUsername.Text.Trim();
+            var password = txtPassword.Text.Trim();
+
+            if (string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password))
             {
                 DisplayAlert("Ops...", "Username and Password cannot be empty!", "Ok");
                 return;
             }
 
-            var repository = new PioneerRepository();
-            var pioneerUser = repository.GetUser(txtUsername.Text, txtPassword.Text);
-
-            //var pioneerUser =  _pioneerUsers.SingleOrDefault(x => x.UserName.Equals(txtUsername.Text) && x.Password.Equals(txtPassword.Text));
-
-            //pioneerUser.SetEvents((DateTime.Now, new List<EventModel>() { new EventModel { Name = "Event1", Description = "Description1" } }));
-            //pioneerUser.SetEvents((DateTime.Now.AddDays(1), new List<EventModel>() { new EventModel { Name = "Event2", Description = "Description2" } }));
-            //pioneerUser.SetEvents((DateTime.Now.AddDays(2), new List<EventModel>() { new EventModel { Name = "Event3", Description = "Description3" } }));
+            var pioneerUser = _repository.GetUser(userName, password);
 
             if (pioneerUser != null)
             {
@@ -53,7 +45,7 @@ namespace PioneerMobileApp
             }
             else
             {
-                DisplayAlert("Ops...", "Username or Password not correct!", "Ok");
+                DisplayAlert("Ops...", "User not found! Please check you Username and Password.", "Ok");
                 return;
             }          
         }

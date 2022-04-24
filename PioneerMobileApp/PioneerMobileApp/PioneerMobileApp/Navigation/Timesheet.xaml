@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             
              xmlns:plugin="clr-namespace:Xamarin.Plugin.Calendar.Controls;assembly=Xamarin.Plugin.Calendar" 
              xmlns:local="clr-namespace:PioneerMobileApp.ViewModels"
+             xmlns:controls="clr-namespace:PioneerMobileApp.Controls"
              x:Class="PioneerMobileApp.Navigation.Timesheet"     
              x:Name="PioneerCalendarPage"
-             >
+             BackgroundImageSource="bkg_pioneer.jpg">
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding TodayCommand}" Text="Today" />
     </ContentPage.ToolbarItems>
@@ -14,11 +15,21 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Calendar Pioneer"
+        <StackLayout Padding="40" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+            <!--<Label Text="Calendar Pioneer"
                 VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+                HorizontalOptions="CenterAndExpand" />-->
+            <Image Source="pioneer_logo.jpg" WidthRequest="160" HeightRequest="52"></Image>
 
+            <Label
+                x:Name="lblWelcome"
+                Text="Events planned for the foreseable future"
+                FontSize="Large"
+                FontAttributes="Bold" 
+                HorizontalTextAlignment="Center"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />            
+            
             <plugin:Calendar
                 Events="{Binding Events}"
                 MaximumDate="{Binding MaximumDate}"
@@ -29,26 +40,56 @@
                 Padding="10,0"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand">
+                
+
+                <plugin:Calendar.HeaderSectionTemplate>
+                    <controls:CalendarHeader />
+                </plugin:Calendar.HeaderSectionTemplate>
+
+                <plugin:Calendar.FooterSectionTemplate>
+                    <DataTemplate>
+                        <controls:CalendarFooter />
+                    </DataTemplate>
+                </plugin:Calendar.FooterSectionTemplate>
+
+                <!--<plugin:Calendar.EventTemplate>
+                    <DataTemplate>
+                        <controls:CalenderEvent CalenderEventCommand="{Binding BindingContext.EventSelectedCommand, Source={x:Reference advancedCalendarPage}}" />
+                    </DataTemplate>
+                </plugin:Calendar.EventTemplate>-->
+
                 <plugin:Calendar.EventTemplate>
                     <DataTemplate>
                         <StackLayout
-                    Padding="15,0,0,0"
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="FillAndExpand">
+                            Padding="15,0,0,0"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand">
                             <Label
-                        FontAttributes="Bold"
-                        FontSize="Medium"
-                        Text="{Binding Name}" />
+                                FontAttributes="Bold"
+                                FontSize="Medium"
+                                Text="{Binding Name}" />
                             <Label
-                        FontSize="Small"
-                        LineBreakMode="WordWrap"
-                        Text="{Binding Description}" />
+                                FontSize="Small"
+                                LineBreakMode="WordWrap"
+                                Text="{Binding Description}" />
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding BindingContext.EventSelectedCommand, Source={x:Reference PioneerCalendarPage}}" CommandParameter="{Binding .}" />
                             </StackLayout.GestureRecognizers>
                         </StackLayout>
                     </DataTemplate>
                 </plugin:Calendar.EventTemplate>
+                
+                <plugin:Calendar.EmptyTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Label
+                        Margin="0,5,0,5"
+                        HorizontalTextAlignment="Center"
+                        Text="NO EVENTS FOR THE SELECTED DATE" />
+                        </StackLayout>
+                    </DataTemplate>
+                </plugin:Calendar.EmptyTemplate>
+
             </plugin:Calendar>
 
 

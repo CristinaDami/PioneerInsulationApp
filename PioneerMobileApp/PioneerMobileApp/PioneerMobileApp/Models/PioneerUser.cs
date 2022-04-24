@@ -22,25 +22,7 @@ namespace PioneerMobileApp.Models
 
         public PioneerUser()
         {
-
-        }
-
-        public PioneerUser(int id, string firstName, string lastName, string userName, string password, UserType userType, string officeDepartment)
-        {
-            Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            UserName = userName;
-            Password = password;
-            UserType = userType;
-            OfficeDepartment = officeDepartment;
-
             Events = new Dictionary<DateTime, List<EventModel>>();
-        }
-
-        public void SetEvents((DateTime dateTime, List<EventModel> events) @event)
-        {
-            Events.Add(@event.dateTime, @event.events);
         }
     }
 }

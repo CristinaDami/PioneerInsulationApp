@@ -4,9 +4,9 @@ using System;
 namespace PioneerMobileApp.Models
 {
     [Table("[dbo].PioneerEvent")]
-    public class UserEvent
+    public class PioneerEvent : PioneerUser
     {
-        [ExplicitKey] public int Id { get; set; }
+        [ExplicitKey] public new int Id { get; set; }
 
         public DateTime EventDate { get; set; }
 
