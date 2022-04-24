@@ -20,7 +20,7 @@ namespace PioneerMobileApp.Models
         public string UserName { get; set; }
         public string Password { get; set; }
 
-        public UserType UserType { get; set; }
+        public UserType UserTypeId { get; set; }
         public string OfficeDepartment { get; set; }
 
         public Dictionary<DateTime, List<EventModel>> Events { get; set; }

@@ -10,10 +10,10 @@ namespace PioneerMobileApp.Models
     public enum UserType
     {        
         [Description("Admin user")]
-        Admin = 0,
+        Admin = 1,
         [Description("Admin office user")]
-        AdminOffice = 1,
+        AdminOffice = 2,
         [Description("Operative user")]
-        Operative = 2,
+        Operative = 3,
     }
 }

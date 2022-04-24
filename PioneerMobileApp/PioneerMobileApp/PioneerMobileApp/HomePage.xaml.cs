@@ -23,7 +23,7 @@ namespace PioneerMobileApp
 
             Label userType = this.FindByName<Label>("lblUserType");
             
-            userType.Text = $"UserType: {pioneerUser.UserType.GetEnumDescription()}";
+            userType.Text = $"UserType: {pioneerUser.UserTypeId.GetEnumDescription()}";
 
             Label lblWelcome = this.FindByName<Label>("lblWelcome");
             lblWelcome.Text = $"Welcome back {pioneerUser.FirstName} {pioneerUser.LastName}\nto Pioneer Homepage!";

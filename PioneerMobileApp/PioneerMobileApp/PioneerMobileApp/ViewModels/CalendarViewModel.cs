@@ -31,7 +31,7 @@ namespace PioneerMobileApp.ViewModels
             var events = Enumerable.Empty<PioneerEvent>();
 
             // 
-            if (pioneerUser.UserType == UserType.Admin || pioneerUser.UserType == UserType.AdminOffice)
+            if (pioneerUser.UserTypeId == UserType.Admin || pioneerUser.UserTypeId == UserType.AdminOffice)
             {
                 events = pioneerRepository.GetAllEvents(); // Retieve all events only if Admin
             }
