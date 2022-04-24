@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using PioneerMobileApp.Common;
 using PioneerMobileApp.Models;
+using PioneerMobileApp.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,12 @@ namespace PioneerMobileApp
         {
             InitializeComponent();
 
-            _pioneerUsers = new List<PioneerUser>
-            {
-                new PioneerUser("Cristina", "Damian", "A", "A", UserType.Admin, "Boss"),
-                new PioneerUser("Moses", "Damian", "Admina", "Admina", UserType.AdminOffice, "Administration"),
-                new PioneerUser("Bogdan", "Popescu", "Adminu", "Adminu", UserType.Operative, "Operative"),
-            };
+            //_pioneerUsers = new List<PioneerUser>
+            //{
+            //    new PioneerUser("Cristina", "Damian", "A", "A", UserType.Admin, "Boss"),
+            //    new PioneerUser("Moses", "Damian", "Admina", "Admina", UserType.AdminOffice, "Administration"),
+            //    new PioneerUser("Bogdan", "Popescu", "Adminu", "Adminu", UserType.Operative, "Operative"),
+            //};
         }
 
         private void Button_Clicked(object sender, EventArgs e)
@@ -36,11 +37,14 @@ namespace PioneerMobileApp
                 return;
             }
 
-            var pioneerUser =  _pioneerUsers.SingleOrDefault(x => x.UserName.Equals(txtUsername.Text) && x.Password.Equals(txtPassword.Text));
+            var repository = new PioneerRepository();
+            var pioneerUser = repository.GetUser(txtUsername.Text, txtPassword.Text);
 
-            pioneerUser.SetEvents((DateTime.Now, new List<EventModel>() { new EventModel { Name = "Event1", Description = "Description1" } }));
-            pioneerUser.SetEvents((DateTime.Now.AddDays(1), new List<EventModel>() { new EventModel { Name = "Event2", Description = "Description2" } }));
-            pioneerUser.SetEvents((DateTime.Now.AddDays(2), new List<EventModel>() { new EventModel { Name = "Event3", Description = "Description3" } }));
+            //var pioneerUser =  _pioneerUsers.SingleOrDefault(x => x.UserName.Equals(txtUsername.Text) && x.Password.Equals(txtPassword.Text));
+
+            //pioneerUser.SetEvents((DateTime.Now, new List<EventModel>() { new EventModel { Name = "Event1", Description = "Description1" } }));
+            //pioneerUser.SetEvents((DateTime.Now.AddDays(1), new List<EventModel>() { new EventModel { Name = "Event2", Description = "Description2" } }));
+            //pioneerUser.SetEvents((DateTime.Now.AddDays(2), new List<EventModel>() { new EventModel { Name = "Event3", Description = "Description3" } }));
 
             if (pioneerUser != null)
             {

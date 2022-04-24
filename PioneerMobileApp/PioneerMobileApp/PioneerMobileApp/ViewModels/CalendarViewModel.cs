@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using PioneerMobileApp.Common;
 using PioneerMobileApp.Models;
+using PioneerMobileApp.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,11 +31,18 @@ namespace PioneerMobileApp.ViewModels
             var user = Task.Run(() => SecureStorage.GetAsync(ApplicationConstants.CurrentUser)).Result;
             var pioneerUser = JsonConvert.DeserializeObject<PioneerUser>(user);
 
+
+            var pioneerRepository = new PioneerRepository();
+            var events = Task.Run(() => pioneerRepository.GetEventsByUserId(pioneerUser.Id)).Result;
             // testing all kinds of adding events
             // when initializing collection
 
+            var eventsGrouped = events
+                .GroupBy(x => x.EventDate)
+                .Select(x => new { x.Key, Events = x.Select(y => new EventModel() { Name = y.EventTitle, Description = y.EventDescription }) });
+
             Events = new EventCollection();
-            pioneerUser.Events.ForEach(x => Events.Add(x.Key, x.Value));
+            eventsGrouped.ForEach(x => Events.Add(x.Key, x.Events.ToList() ));
 
             //Events = new EventCollection
             //{
