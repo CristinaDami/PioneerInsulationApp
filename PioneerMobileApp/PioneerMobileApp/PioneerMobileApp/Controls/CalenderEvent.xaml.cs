@@ -8,7 +8,7 @@ namespace PioneerMobileApp.Controls
     /// <summary>
     /// Author: Cristina Damian - Roehampton University - Faculty of Computing
     /// 
-    /// Class for attaching interactions events on Calendar (e.g. expand/collapse Footer)
+    /// <para>Class for attaching interactions events on Calendar (e.g. expand/collapse Footer)</para>
     /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CalenderEvent : ContentView

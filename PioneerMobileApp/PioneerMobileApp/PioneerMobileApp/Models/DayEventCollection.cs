@@ -7,7 +7,7 @@ namespace PioneerMobileApp.Models
     /// <summary>    
     /// Author: Cristina Damian - Roehampton University - Faculty of Computing
     /// 
-    /// Wrapper to allow change the dot color on Calendar Event
+    /// <para>Wrapper to allow change the dot color on Calendar Event</para>
     /// </summary>
     public class DayEventCollection<T> : List<T>, IPersonalizableDayEvent
     {

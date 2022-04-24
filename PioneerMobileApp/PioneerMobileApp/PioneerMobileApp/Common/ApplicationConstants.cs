@@ -3,7 +3,7 @@
     /// <summary>
     /// Author: Cristina Damian - Roehampton University - Faculty of Computing
     /// 
-    /// Utility key value pair class for common variables
+    /// <para>Utility key value pair class for common variables</para>
     /// </summary>
     public struct ApplicationConstants
     {

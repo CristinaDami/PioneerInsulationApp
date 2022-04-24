@@ -10,7 +10,7 @@ namespace PioneerMobileApp.Repository
     /// <summary>
     /// Author: Cristina Damian - Roehampton University - Faculty of Computing
     /// 
-    /// Class gateway as data access layer to MS SQL Server
+    /// <para>Class gateway as data access layer to MS SQL Server</para>
     /// </summary>
     public class PioneerRepository
     {

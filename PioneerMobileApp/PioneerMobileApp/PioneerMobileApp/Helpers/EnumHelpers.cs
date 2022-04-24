@@ -7,7 +7,7 @@ namespace PioneerMobileApp.Helpers
     /// <summary>
     /// Author: Cristina Damian - Roehampton University - Faculty of Computing
     /// 
-    /// Helper class for getting value from Description Enum attribute
+    /// <para>Helper class for getting value from Description Enum attribute</para>
     /// </summary>
     public static class EnumHelpers
     {

@@ -6,9 +6,7 @@ namespace PioneerMobileApp.Services
     /// <summary>
     /// Author: Cristina Damian - Roehampton University - Faculty of Computing
     /// 
-    /// Interface for repository pattern based on concrete implementation
-    /// (future improvements)
-    /// 
+    /// <para>Interface for repository pattern based on concrete implementation (future improvements)</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IDataStore<T>

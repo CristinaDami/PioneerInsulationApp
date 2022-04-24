@@ -6,7 +6,7 @@ namespace PioneerMobileApp.Controls
     /// <summary>
     /// Author: Cristina Damian - Roehampton University - Faculty of Computing
     /// 
-    /// Custom Calendar Footer for Timesheet
+    /// <para>Custom Calendar Footer for Timesheet</para>
     /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CalendarFooter : ContentView

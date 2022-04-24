@@ -6,7 +6,7 @@ namespace PioneerMobileApp.Controls
     /// <summary>
     /// Author: Cristina Damian - Roehampton University - Faculty of Computing
     /// 
-    /// Custom Calendar Header for Timesheet
+    /// <para>Custom Calendar Header for Timesheet</para>
     /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CalendarHeader : DataTemplate

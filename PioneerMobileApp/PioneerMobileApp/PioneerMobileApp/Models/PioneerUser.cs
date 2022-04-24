@@ -7,7 +7,7 @@ namespace PioneerMobileApp.Models
     /// <summary>
     /// Author: Cristina Damian - Roehampton University - Faculty of Computing
     /// 
-    /// Class entity to SQL Server PioneerUser Table
+    /// <para>Class entity to SQL Server PioneerUser Table</para>
     /// </summary>
     [Table("[dbo].PioneerUser")] // Define a name of a physical SQL Server Table
     public class PioneerUser

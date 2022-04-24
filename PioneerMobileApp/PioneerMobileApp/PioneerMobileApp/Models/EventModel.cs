@@ -5,7 +5,7 @@ namespace PioneerMobileApp.Models
     /// <summary>
     /// Author: Cristina Damian - Roehampton University - Faculty of Computing
     /// 
-    /// Class model for Calender event
+    /// <para>Class model for Calender event</para>
     /// </summary>
     public class EventModel
     {

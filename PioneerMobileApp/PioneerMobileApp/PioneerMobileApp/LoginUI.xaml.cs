@@ -3,7 +3,6 @@ using PioneerMobileApp.Common;
 using PioneerMobileApp.Models;
 using PioneerMobileApp.Repository;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -39,7 +38,7 @@ namespace PioneerMobileApp
 
             var pioneerUser = _repository.GetUser(userName, password);// Fetch User from the database
 
-            if (pioneerUser != null)
+            if (pioneerUser != null) // PioneerUser has been found 
             {
                 // Storing securely PioneerUser into SecureStorage (serialized as a JSON string)
                 Task.Run(() => SecureStorage.SetAsync(ApplicationConstants.CurrentUser, JsonConvert.SerializeObject(pioneerUser)));

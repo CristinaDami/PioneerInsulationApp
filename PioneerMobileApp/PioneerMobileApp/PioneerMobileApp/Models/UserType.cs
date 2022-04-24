@@ -5,7 +5,7 @@ namespace PioneerMobileApp.Models
     /// <summary>
     /// Author: Cristina Damian - Roehampton University - Faculty of Computing
     /// 
-    /// Enum User Type
+    /// <para>Enum User Type</para>
     /// </summary>
     public enum UserType
     {        
